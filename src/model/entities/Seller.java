@@ -3,6 +3,7 @@ package model.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+//Classe seller
 public class Seller implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -14,13 +15,14 @@ public class Seller implements Serializable{
 	
 	private Department department;
 	
-
+	//Construtor padrao - vazio
 	public Seller() {
 
 	}
-	
+	//Construtor com parametro e seus tipos de dados
 	public Seller(Integer id, String name, String email, Date birthDate, Double baseSalary,
 			Department department) {
+		//Referenciando o proprio objeto da classe.
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -28,11 +30,13 @@ public class Seller implements Serializable{
 		this.baseSalary = baseSalary;
 		this.department = department;
 	}
-
+	//getters e setters
+	//metodo para retornar um atributo/variavel -> acessores ou consultores de acesso
 	public int getId() {
 		return id;
 	}
 
+	//metodo para definir um atributo/variavel -> modificadores de acesso
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -76,6 +80,7 @@ public class Seller implements Serializable{
 		this.department = department;
 	}
 
+	//hashCode e equals -> compara um id com outro
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -96,7 +101,9 @@ public class Seller implements Serializable{
 		if (id != other.id)
 			return false;
 		return true;
-	}	
+	}
+	
+	//metodo toString -> transforma todos os atributos da classe em String.
 	@Override
 	public String toString() {
 		return "Seller [id=" + id + ", name=" + name + ", email=" + 

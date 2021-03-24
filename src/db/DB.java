@@ -17,12 +17,12 @@ public class DB {
 	//inicinando com um valor nulo
 	private static Connection conn = null;
 	
-	//Metodo que faz a conexão com o db
+	//metodo que faz a conexão com o db
 	public static Connection getConnection() {
 		//se conn for igual a nulo -> ele faz a conexao com o db
 		//caso essa condição falhe -> ele pula a condição e retorna uma conexão existente
 		if (conn == null) {
-			//Tratamento de possíveis erros 
+			//tratamento de possíveis erros 
 			try {
 				//definindo propriedades de conexão
 				//pegando as propriedaes do db com o método loadProperties
@@ -45,7 +45,7 @@ public class DB {
 	public static void closeConnection() {
 		//se conn é diferente de nulo a conexão fecha
 		if (conn != null) {
-			//Tratamento de possíveis erros 
+			//tratamento de possíveis erros 
 			try {
 				//fechamento da conexao
 				conn.close();

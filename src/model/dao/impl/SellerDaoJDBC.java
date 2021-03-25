@@ -17,9 +17,10 @@ import model.entities.Department;
 import model.entities.Seller;
 
 public class SellerDaoJDBC implements SellerDao {
-
+	//definindo um objeto para interface Connection
 	private Connection conn;
-
+	
+	//Construtor com parâmetro recebendo um objeto do tipo Connection
 	public SellerDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -27,6 +28,7 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public void update(Seller seller) {
 		PreparedStatement st = null;
+		//tratamento de possíveis erros 
 		try {
 			st = conn.prepareStatement("UPDATE seller "
 					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " + "WHERE id = ?");
@@ -102,15 +104,20 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public Seller findById(Integer id) {
 		PreparedStatement st = null;
-		ResultSet rs = null;
+		ResultSet rs = null; 
 		try {
+			//recebendo uma Query -> junção da tabela seller com department.
 			st = conn.prepareStatement(
 					"SELECT seller.*,department.Name as DepName " + "FROM seller INNER JOIN department "
 							+ "ON seller.DepartmentId = department.Id " + "WHERE seller.Id = ?");
 
 			st.setInt(1, id);
+			//objeto ResulSet recebe a query e executa
 			rs = st.executeQuery();
+			//se caso rs.next() for true ->  ele retorna os dados da tabela
+			//se caso for false -> ele pula condição e retorna uma valor nulo.
 			if (rs.next()) {
+				//metodos auxiliares
 				Department dep = instantiateDepartment(rs);
 				Seller obj = instantiateSeller(rs, dep);
 				return obj;
@@ -127,22 +134,29 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 
 	}
-
+	//metodo auxiliar com parâmetro recebendo dois objetos do tipo ResultSet e Department
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		//instanciando a classe Seller
 		Seller obj = new Seller();
+		//atribuindo valores as colunas ou seja -> setando valores com os métodos setters
 		obj.setId(rs.getInt("Id"));
 		obj.setName(rs.getString("Name"));
 		obj.setEmail(rs.getString("Email"));
 		obj.setBaseSalary(rs.getDouble("BaseSalary"));
 		obj.setBirthDate(rs.getDate("BirthDate"));
 		obj.setDepartment(dep);
+		//retorna o objeto Seller
 		return obj;
 	}
-
+	
+	//metodo auxiliar com parâmetro recebendo o objeto ResulSet
 	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		//instanciando a classe Department
 		Department dep = new Department();
+		//atribuindo valores as colunas ou seja -> setando valores com os métodos setters
 		dep.setId(rs.getInt("DepartmentId"));
 		dep.setName(rs.getString("DepName"));
+		//retorna o objeto Department
 		return dep;
 	}
 
@@ -152,8 +166,11 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"Select seller.*, department.Name as DepName " + "FROM seller INNER JOIN department "
-							+ "ON seller.DepartmentId = department.Id " + " ORDER BY Name");
+					"Select seller.*, department.Name as DepName " 
+					 + "FROM seller INNER JOIN department "
+					 + "ON seller.DepartmentId = department.Id " 
+					 + " ORDER BY Name");
+			
 			rs = st.executeQuery();
 
 			List<Seller> list = new ArrayList<Seller>();
@@ -187,8 +204,11 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"Select seller.*, department.Name as DepName " + "FROM seller INNER JOIN department "
-							+ "ON seller.DepartmentId = department.Id " + "WHERE DepartmentId = ? " + "ORDER BY Name");
+					"Select seller.*, department.Name as DepName " 
+					+ "FROM seller INNER JOIN department "
+					+ "ON seller.DepartmentId = department.Id " 
+					+ "WHERE DepartmentId = ? " 
+					+ "ORDER BY Name");
 
 			st.setInt(1, department.getId());
 			rs = st.executeQuery();
@@ -206,12 +226,14 @@ public class SellerDaoJDBC implements SellerDao {
 				Seller obj = instantiateSeller(rs, dep);
 				list.add(obj);
 			}
+			//retorna a lista
 			return list;
 
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 
 		} finally {
+			//Fechemento do closeStament() e closeResultSet()
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}

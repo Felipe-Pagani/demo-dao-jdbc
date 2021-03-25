@@ -45,13 +45,10 @@ public class DB {
 	public static void closeConnection() {
 		//se conn é diferente de nulo a conexão fecha
 		if (conn != null) {
-			//tratamento de possíveis erros 
 			try {
 				//fechamento da conexao
 				conn.close();
-				//caso aconteça alguma Exception -> faz a captura e lança uma Exception personalizada
 			} catch (SQLException e) {
-				//lançando uma Exception personalizada
 				throw new DbException(e.getMessage());
 			}
 		}
@@ -60,7 +57,6 @@ public class DB {
 	//metodo que retorna o objeto Properties
 	//metodo para carregar as propriedades que estão definidas no arquivo db.properties
 	private static Properties loadProperties() {
-		//Tratamento de possíveis erros 
 		try (FileInputStream fs = new FileInputStream("db.properties")) {
 			//instanciando um objeto do tipo Properties
 			Properties props = new Properties();
@@ -69,9 +65,7 @@ public class DB {
 			props.load(fs);
 			//Retorna o props
 			return props;
-			//Caso aconteça alguma Exception -> faz a captura e lança uma Exception personalizada
 		} catch (IOException e) {
-			//lançando uma Exception personalizada
 			throw new DbException(e.getMessage());
 		}
 	}
@@ -80,14 +74,10 @@ public class DB {
 	public static void closeStatement(Statement st) {
 		//se st for diferente de nulo ele chama o st.close()
 		if (st != null) {
-			//Tratando possíveis erros 
 			try {
 				//fechamento do Statement
 				st.close();
-				//Caso aconteça alguma Exception -> faz a captura e lança uma 
-				//Exception Personalizada
 			} catch (SQLException e) {
-				//lançando uma Exception Personalizada
 				throw new DbException(e.getMessage());
 			}
 		}
@@ -96,13 +86,11 @@ public class DB {
 	public static void closeResultSet(ResultSet rs) {
 		//se rs for diferente de nulo ele chama o rs.close()
 		if (rs != null) {
-			//Tratando possíveis erros 
 			try {
 				//fechamento do ResultSet
 				rs.close();
 				//Caso aconteça alguma Exception -> faz a captura e lança uma Exception personalizada
 			} catch (SQLException e) {
-				//lançando uma Exception personalizada
 				throw new DbException(e.getMessage());
 			}
 		}

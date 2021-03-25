@@ -15,8 +15,9 @@ import model.dao.DepartmentDao;
 import model.entities.Department;
 
 public class DepartmentDaoJDBC implements DepartmentDao {
+	//definindo um objeto para interface Connection
 	private Connection conn;
-
+	//Construtor com parametro recebendo um objeto do tipo Connection
 	public DepartmentDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -24,6 +25,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	@Override
 	public void insert(Department department) {
 		PreparedStatement st = null;
+		//tratamento de possíveis erros 
 		try {
 			st = conn.prepareStatement("INSERT INTO department (Name) VALUES (?)", 
 					Statement.RETURN_GENERATED_KEYS);
@@ -87,10 +89,12 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		}
 	}
 
+	
 	@Override
 	public Department findById(Integer id) {
+		
 		PreparedStatement st = null;
-		ResultSet rs = null;
+		ResultSet rs = null; 
 		try {
 			st = conn.prepareStatement("SELECT *FROM department WHERE Id = ?");
 			st.setInt(1, id);
